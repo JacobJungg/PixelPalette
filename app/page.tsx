@@ -14,7 +14,9 @@ export default function Home() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [squares, setSquares] = useState<string[]>([]);
   const [sliderValue, setSliderValue] = useState(4);
+  const imageAreaSize = 400
 
+  
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
@@ -85,16 +87,27 @@ export default function Home() {
           </CardHeader>
           <CardContent>
             <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" onChange={handleFileChange} />
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+            <div style={{ width: `${imageAreaSize}px`, height: `${imageAreaSize}px`, position: 'relative' }}>
               {squares.map((squareSrc, index) => (
-                <img key={index} src={squareSrc} alt={`Square ${index}`} style={{ width: `${100 / sliderValue}%`, height: 'auto' }} />
+                <img
+                  key={index}
+                  src={squareSrc}
+                  alt={`Square ${index}`}
+                  style={{
+                    width: `${imageAreaSize / sliderValue}px`,
+                    height: `${imageAreaSize / sliderValue}px`,
+                    position: 'absolute',
+                    left: `${(index % sliderValue) * (imageAreaSize / sliderValue)}px`,
+                    top: `${Math.floor(index / sliderValue) * (imageAreaSize / sliderValue)}px`,
+                  }}
+                />
               ))}
             </div>
           </CardContent>
           <CardFooter>
             <Slider 
               defaultValue={[5]} 
-              max={10} 
+              max={100} 
               step={1} 
               onValueChange={(values) => setSliderValue(values[0])}
             />
