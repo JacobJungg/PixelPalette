@@ -13,7 +13,7 @@ import { Slider } from "@/components/ui/slider"
 export default function Home() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [squares, setSquares] = useState<string[]>([]);
-  const [sliderValue, setSliderValue] = useState(4); // Default value for the slider
+  const [sliderValue, setSliderValue] = useState(4);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
@@ -30,14 +30,50 @@ export default function Home() {
   };
 
   const splitImageIntoSquares = (imgSrc: string, numSquaresPerSide: number) => {
-    // ... existing code for splitting the image
+    const img = new Image();
+    img.onload = () => {
+      const squareSize = img.width / numSquaresPerSide;
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d')!;
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+  
+      // Drawing the grid lines
+      ctx.strokeStyle = 'black';
+      for (let y = 0; y <= numSquaresPerSide; y++) {
+        ctx.moveTo(0, y * squareSize);
+        ctx.lineTo(img.width, y * squareSize);
+        ctx.stroke();
+      }
+      for (let x = 0; x <= numSquaresPerSide; x++) {
+        ctx.moveTo(x * squareSize, 0);
+        ctx.lineTo(x * squareSize, img.height);
+        ctx.stroke();
+      }
+  
+      // Creating an array of squares with the grid
+      const squaresArray: string[] = [];
+      for (let y = 0; y < numSquaresPerSide; y++) {
+        for (let x = 0; x < numSquaresPerSide; x++) {
+          const squareCanvas = document.createElement('canvas');
+          squareCanvas.width = squareSize;
+          squareCanvas.height = squareSize;
+          const squareCtx = squareCanvas.getContext('2d')!;
+          squareCtx.drawImage(canvas, x * squareSize, y * squareSize, squareSize, squareSize, 0, 0, squareSize, squareSize);
+          squaresArray.push(squareCanvas.toDataURL());
+        }
+      }
+      setSquares(squaresArray);
+    };
+    img.src = imgSrc;
   };
 
   useEffect(() => {
     if (imageSrc) {
       splitImageIntoSquares(imageSrc, sliderValue);
     }
-  }, [imageSrc, sliderValue]); // Depend on both imageSrc and sliderValue
+  }, [imageSrc, sliderValue]);
 
   return (
     <main>
@@ -57,8 +93,8 @@ export default function Home() {
           </CardContent>
           <CardFooter>
             <Slider 
-              defaultValue={[50]} 
-              max={100} 
+              defaultValue={[5]} 
+              max={10} 
               step={1} 
               onValueChange={(values) => setSliderValue(values[0])}
             />
