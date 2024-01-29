@@ -42,6 +42,7 @@ export default function Home() {
       ctx.drawImage(img, 0, 0, img.width, img.height);
   
       // Drawing the grid lines
+      ctx.lineWidth = 0.5;
       ctx.strokeStyle = 'black';
       for (let y = 0; y <= numSquaresPerSide; y++) {
         ctx.moveTo(0, y * squareSize);
