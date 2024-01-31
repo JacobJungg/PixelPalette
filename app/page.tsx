@@ -9,6 +9,27 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { Button } from "@/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+
+
+const formSchema = z.object({
+  image: z.instanceof(File, {
+    message: "You must provide an image file.",
+  }),
+})  
 
 export default function Home() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -16,7 +37,18 @@ export default function Home() {
   const [sliderValue, setSliderValue] = useState(4);
   const imageAreaSize = 400
 
-  
+  const form = useForm<{ image: File }>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      image: undefined, // You can provide default values if needed
+    },
+  });
+``
+
+  const handleSubmit = (values: z.infer<typeof formSchema>) => {
+    console.log({ values });
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
@@ -80,7 +112,79 @@ export default function Home() {
 
   return (
     <main>
-      <div className="flex h-full w-full">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Form {...form}>
+<form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Username</FormLabel>
+              <FormControl>
+                <Input placeholder="shadcn" {...field} />
+              </FormControl>
+              <FormDescription>
+                This is your public display name.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+          <Button type="submit">Submit</Button>
+      </form>
+    </Form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <Card>
           <CardHeader>
             <CardTitle>Pixel Palette</CardTitle>
@@ -114,7 +218,6 @@ export default function Home() {
             />
           </CardFooter>
         </Card>
-      </div>
     </main>
   );
 }
