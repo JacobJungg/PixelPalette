@@ -63,9 +63,9 @@ export default function Home() {
     }
   };
 
-  const splitImageIntoSquares = (imgSrc: string, numSquaresPerSide: number) => {
-    const img = new Image();
-    img.onload = () => {
+      const splitImageIntoSquares = (imgSrc: string, numSquaresPerSide: number) => {
+      const img = new Image();
+      img.onload = () => {
       const squareSize = img.width / numSquaresPerSide;
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d')!;
