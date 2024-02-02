@@ -163,28 +163,6 @@ export default function Home() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <Card>
           <CardHeader>
             <CardTitle>Pixel Palette</CardTitle>
