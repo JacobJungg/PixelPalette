@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider"
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Home() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -16,7 +17,7 @@ export default function Home() {
   const [sliderValue, setSliderValue] = useState(4);
   const imageAreaSize = 400
 
-  
+  const router = useRouter()
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
@@ -112,6 +113,9 @@ export default function Home() {
               step={1} 
               onValueChange={(values) => setSliderValue(values[0])}
             />
+                <button type="button" onClick={() => router.push('/paint')}>
+      Paint
+    </button>
           </CardFooter>
         </Card>
       </div>
