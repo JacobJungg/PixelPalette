@@ -9,25 +9,24 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider"
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [squares, setSquares] = useState<string[]>([]);
   const [sliderValue, setSliderValue] = useState(4);
   const imageAreaSize = 400
-
   const router = useRouter()
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null;
+  const file = e.target.files ? e.target.files[0] : null;
     if (file) {
       const reader = new FileReader();
       reader.onload = (readerEvent) => {
-        const result = readerEvent.target?.result;
-        if (typeof result === 'string') {
-          setImageSrc(result);
-        }
-      };
+      const result = readerEvent.target?.result;
+      if (typeof result === 'string') {
+        setImageSrc(result);
+      }
+    };
       reader.readAsDataURL(file);
     }
   };
@@ -41,8 +40,6 @@ export default function Home() {
       canvas.width = img.width;
       canvas.height = img.height;
       ctx.drawImage(img, 0, 0, img.width, img.height);
-  
-      // Drawing the grid lines
       ctx.lineWidth = 0.5;
       ctx.strokeStyle = 'black';
       for (let y = 0; y <= numSquaresPerSide; y++) {
@@ -55,8 +52,6 @@ export default function Home() {
         ctx.lineTo(x * squareSize, img.height);
         ctx.stroke();
       }
-  
-      // Creating an array of squares with the grid
       const squaresArray: string[] = [];
       for (let y = 0; y < numSquaresPerSide; y++) {
         for (let x = 0; x < numSquaresPerSide; x++) {
